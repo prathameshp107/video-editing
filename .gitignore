@@ -1,0 +1,26 @@
+# Keep the reusable repository small. Projects retain plans, but not footage or renders.
+projects/*/media/
+projects/*/work/
+projects/*/exports/
+projects/*/review/
+projects/*/assets/
+projects/*/media_inventory.json
+projects/*/media_inventory.csv
+projects/*/SOURCE_MEDIA.txt
+*.mp4
+*.mov
+*.mkv
+*.wav
+*.mp3
+*.webp
+*.jpg
+*.jpeg
+*.png
+node_modules/
+.hyperframes/
+__pycache__/
+*.pyc
+
+
+.venv/
+.pytest_cache/
