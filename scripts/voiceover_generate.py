@@ -10,7 +10,13 @@ from pathlib import Path
 
 
 KIT = Path(__file__).resolve().parents[1]
-DEFAULT_REFERENCE = KIT / "private" / "voice" / "reference_23s.wav"
+SAMPLE_VOICE_M4A = KIT / "private" / "voice" / "Sample Voice for Clonning.m4a"
+SAMPLE_VOICE_WAV = KIT / "private" / "voice" / "Sample Voice for Clonning.wav"
+DEFAULT_REFERENCE = (
+    SAMPLE_VOICE_WAV if SAMPLE_VOICE_WAV.is_file()
+    else (SAMPLE_VOICE_M4A if SAMPLE_VOICE_M4A.is_file()
+    else KIT / "private" / "voice" / "reference_23s.wav")
+)
 DEFAULT_MODEL = KIT / "private" / "models" / "chatterbox-hi-v3"
 MODEL_FILES = ("t3_hi.safetensors", "s3gen.pt", "ve.pt",
                "grapheme_mtl_merged_expanded_v1.json")
@@ -24,6 +30,25 @@ def text_parts(text: str) -> list[str]:
     return parts or [text]
 
 
+def resolve_reference_wav(ref_path: Path) -> Path:
+    """Ensure the reference is a 24 kHz mono WAV readable by torchaudio/soundfile."""
+    if not ref_path.is_file():
+        raise SystemExit(f"Voice reference missing: {ref_path}")
+    if ref_path.suffix.lower() == ".wav":
+        return ref_path
+
+    wav_path = ref_path.with_suffix(".wav")
+    if not wav_path.is_file() or wav_path.stat().st_mtime < ref_path.stat().st_mtime:
+        import subprocess
+        print(f"Converting reference audio '{ref_path.name}' to 24 kHz mono WAV...", flush=True)
+        subprocess.run(
+            ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-i", str(ref_path),
+             "-vn", "-ac", "1", "-ar", "24000", "-c:a", "pcm_s16le", str(wav_path)],
+            check=True
+        )
+    return wav_path
+
+
 def parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description=__doc__)
     source = p.add_mutually_exclusive_group(required=True)
@@ -31,7 +56,7 @@ def parser() -> argparse.ArgumentParser:
     source.add_argument("--text-file", type=Path, help="UTF-8 text file to speak")
     p.add_argument("--out", type=Path, required=True, help="New WAV output path")
     p.add_argument("--reference", type=Path, default=DEFAULT_REFERENCE,
-                   help="Consented, clean voice reference WAV")
+                   help="Consented, clean voice reference audio (WAV, M4A, etc.)")
     p.add_argument("--model-dir", type=Path, default=DEFAULT_MODEL)
     p.add_argument("--language", default="hi", choices=["hi"],
                    help="Bundled checkpoint is Hindi-specific")
@@ -52,11 +77,13 @@ def main() -> None:
     missing = [name for name in MODEL_FILES if not (args.model_dir / name).is_file()]
     if not args.reference.is_file():
         raise SystemExit(f"Voice reference missing: {args.reference}")
+    effective_reference = resolve_reference_wav(args.reference)
     if missing:
         raise SystemExit(f"Model files missing in {args.model_dir}: {', '.join(missing)}")
     if args.gap < 0 or args.threads < 1:
         raise SystemExit("--gap must be nonnegative and --threads must be positive")
-    summary = {"reference": str(args.reference.resolve()),
+    summary = {"reference": str(effective_reference.resolve()),
+               "source_reference": str(args.reference.resolve()),
                "model_dir": str(args.model_dir.resolve()),
                "sentences": len(parts), "output": str(args.out.resolve())}
     if args.dry_run:
@@ -89,7 +116,7 @@ def main() -> None:
             args.model_dir, device="cpu", t3_model="t3_hi.safetensors")
     finally:
         S3Gen.load_state_dict = original_load
-    model.prepare_conditionals(str(args.reference), exaggeration=args.exaggeration)
+    model.prepare_conditionals(str(effective_reference), exaggeration=args.exaggeration)
 
     waves = []
     started = time.monotonic()
