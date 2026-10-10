@@ -1,6 +1,6 @@
 ---
 name: cut-audit
-description: Audit the picture and audio at edit boundaries in a rendered vlog, catching clipped speech, sudden sound changes, black frames, awkward dissolves, and visible jump cuts.
+description: Audit the picture and audio at edit boundaries in a rendered video, catching clipped speech, sudden sound changes, black frames, awkward dissolves, and visible jump cuts.
 ---
 
 # Cut audit

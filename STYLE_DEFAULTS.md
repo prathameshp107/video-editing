@@ -2,6 +2,8 @@
 
 Add a preference here only when the creator says it applies to future videos or it recurs across projects. Project-specific notes belong in `projects/<name>/STYLE.md`.
 
+**For open-source users:** The rows below reflect the preferences of the original creator of this kit (Kale Farm vlog project). Clear or replace them when setting up this workspace for a different creator. Do not treat these as universal defaults.
+
 | Preference | Why / evidence | Added from project |
 | --- | --- | --- |
 | Keep portrait shots upright in a 16:9 vlog frame, using soft side fill when needed. | The creator found direct 9:16 use messy in the Kale Farm vlog. | Kale Farm |

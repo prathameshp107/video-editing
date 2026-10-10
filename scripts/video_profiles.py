@@ -61,7 +61,11 @@ def video_filter(width: int, height: int, mode: str, focus_x: float = 0.5,
 
 
 def font(bold: bool = False, size: int = 24) -> ImageFont.FreeTypeFont:
+    root = Path(__file__).resolve().parents[1]
     candidates = [
+        root / "assets" / "fonts" / ("Poppins-SemiBold.ttf" if bold else "Poppins-Regular.ttf"),
+        root / ".agents" / "skills" / "motion-overlay" / "assets" / "fonts" / ("Poppins-SemiBold.ttf" if bold else "Poppins-Regular.ttf"),
+        root / "assets" / "fonts" / "OpenSans-Variable.ttf",
         Path("C:/Windows/Fonts/arialbd.ttf" if bold else "C:/Windows/Fonts/arial.ttf"),
         Path("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" if bold else
              "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),

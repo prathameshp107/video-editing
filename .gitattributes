@@ -1,0 +1,22 @@
+# Normalize line endings to LF for all text files in the repository.
+# This ensures consistent editing on Windows, macOS, and Linux.
+* text=auto eol=lf
+
+# Explicitly force LF for markdown, Python, CSV, and JSON files.
+*.md text eol=lf
+*.py text eol=lf
+*.csv text eol=lf
+*.json text eol=lf
+*.txt text eol=lf
+
+# Binary files — do not apply line-ending normalization.
+*.ttf binary
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.webp binary
+*.mp4 binary
+*.mov binary
+*.mkv binary
+*.wav binary
+*.mp3 binary

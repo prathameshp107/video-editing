@@ -16,3 +16,5 @@ Use this when an edit needs the shot that best illustrates a spoken line, or whe
 7. Move the narration beat or choose a different shot, then rerun the audit and check the rendered video at the beat boundaries. Leave source footage unchanged.
 
 Use the beat/evidence/critical-requirement method with vocabulary specific to each project. Do not assume a shot contains an object or action because its filename, transcript, or editorial label says so. Use only free local processing for this repository.
+
+**Note for open-source users:** The concept vocabulary in `.agents/skills/video-semantic-search/scripts/match_timeline.py` (the `CONCEPTS` dictionary) is tuned for Indian food and travel vlogs from the original creator's project. For a different video type or language, edit that dictionary to reflect the subjects, actions, and locations that appear in your footage. The audit logic and evidence system work for any vocabulary.

@@ -2,7 +2,7 @@
 
 Start with the story and source media. The choice of rendering framework follows the edit, not the other way around.
 
-**Watch:** Use the MIT-licensed local `watch` skill to inspect source clips or a style reference with timestamped frames and native captions. In this free-only kit, pass `--engine local --no-whisper`; the visual workflow needs no API key.
+**Watch:** Use the MIT-licensed local `watch` skill to inspect source clips or perform deep forensic post-mortem analysis of reference videos (Instagram Reels, YouTube Shorts, competitor edits) with timestamped frames and native captions. It examines every frame for camera angles, typography styling, motion graphics, pacing, and audio design. In this free-only kit, pass `--engine local --no-whisper`; the visual workflow needs no API key.
 
 **FFmpeg + Kdenlive:** A good fit for many phone clips, trim decisions, rotation fixes, portrait footage in a 16:9 canvas, straightforward dissolves, and an editable timeline. FFmpeg can normalize media before timeline editing and verify the export. Keep normalized media next to the project file.
 
@@ -17,10 +17,13 @@ The official HyperFrames `general-video` workflow has been installed for future 
 ## Default vlog checks
 
 1. Inventory all clips and photos. Look at contact sheets or representative frames, and listen where speech or ambience matters.
-2. Plan the trip or experience as a sequence: hook, journey, arrival, place, main experience, close. Change this shape if the footage calls for it.
+2. Plan the experience as a sequence suited to the footage: hook, context, main experience, close. Change this shape if the footage calls for it.
 3. List required shots in `SHOT_LOG.csv`. Check them against `EDIT_DECISIONS.csv` before rendering.
 4. Keep portrait images upright in a wide frame without stretching. Use a motivated crop or soft background.
-5. Use transitions at story changes or between stills when they help. Keep menu text and price cards readable long enough to pause.
-6. Label food and places only with details supported by the footage or supplied by the creator.
-7. Review the rendered file at opening, travel, arrival, text, still photos, and ending. Check audio and decode the export.
+5. Use transitions at story changes or between stills when they help. Keep text cards readable long enough to pause.
+6. Label subjects and factual claims only with details supported by the footage or supplied by the creator.
+7. Review the rendered file at opening, key transitions, text, still photos, and ending. Check audio and decode the export.
 
+## Agent compatibility
+
+This kit is designed to work with any AI agent that reads `.agents/skills/` directories (Antigravity, Claude Code, Codex, and compatible systems). Skills are loaded on demand from their `SKILL.md` files. The `AGENTS.md` file at the repository root is the always-on rule set. No agent-specific CLI is assumed to be installed.
